@@ -1,6 +1,8 @@
 # CATFACE
 Making overlay cat mustache on faces in images
 
+![](https://images.viblo.asia/5bc931e7-a5e0-46b0-8d4c-695fdf3eb3bb.jpg)
+
 ## Serverless Architectures
 * Amazon S3: Storage
 * AWS Lambda: Serverless compute
