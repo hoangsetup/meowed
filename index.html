@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>A File Upload Demo</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .aligner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #drop {
+      height: 200px;
+      width: 200px;
+      border-radius: 100px;
+      color: #fff;
+      background-color: #67a746;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+<div class="aligner">
+  <div id="drop">Drop files here.</div>
+  <div id="list">
+    <h1>Uploaded Files:</h1>
+  </div>
+</div>
+
+<script type="text/javascript">
+  const drop = document.getElementById('drop');
+  const list = document.getElementById('list');
+  const apiBaseURL = "https://anv26m8ke0.execute-api.ap-northeast-1.amazonaws.com/dev";
+
+  function cancel(e) {
+    e.preventDefault();
+    return false;
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    let dt = e.dataTransfer;
+    let files = dt.files;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+      reader.addEventListener('loadend', function (e) {
+        fetch(apiBaseURL + "/requestUploadURL", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: file.name,
+            type: file.type
+          })
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (json) {
+            return fetch(json.uploadURL, {
+              method: "PUT",
+              body: new Blob([reader.result], {type: file.type})
+            })
+          })
+          .then(function () {
+            const uploadedFileNode = document.createElement('div');
+            uploadedFileNode.innerHTML = '<a target="_blank" href="//s3-ap-northeast-1.amazonaws.com/meowed-upload/' + file.name + '">' + file.name + '</a>';
+            const catface = document.createElement('div');
+            catface.innerHTML = '<a target="_blank" href="//s3-ap-northeast-1.amazonaws.com/meowed-upload/catface-' + file.name + '">' + 'catface-' + file.name + '</a>';
+            list.appendChild(uploadedFileNode);
+            list.appendChild(catface);
+          });
+      });
+      reader.readAsArrayBuffer(file);
+    }
+    return false;
+  }
+
+  drop.addEventListener('dragenter', cancel);
+  drop.addEventListener('dragover', cancel);
+  drop.addEventListener('drop', handleDrop);
+
+</script>
+</body>
+</html>

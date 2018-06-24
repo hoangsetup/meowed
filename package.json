@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "offline": "./node_modules/.bin/sls offline start --port=8080"
+  },
+  "devDependencies": {
+    "aws-sdk": "2.263.1",
+    "serverless": "1.27.3",
+    "serverless-offline": "3.25.4"
+  },
+  "dependencies": {
+    "jimp": "0.2.28"
+  },
+  "name": "meowed",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Hoang Dinh Van <hoangdv@outlook.com>",
+  "license": "MIT"
+}

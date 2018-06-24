@@ -1,0 +1,59 @@
+service: meowed-catface
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: ap-northeast-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "rekognition:DetectFaces"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "arn:aws:s3:::meowed-upload/*"
+
+package:
+  exclude:
+    - index.html
+
+plugins:
+  - serverless-offline
+
+#resources:
+#  Resources:
+#    UploadBucket:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: meowed-upload
+#        AccessControl: PublicRead
+#        CorsConfiguration:
+#          CorsRules:
+#          - AllowedMethods:
+#            - GET
+#            - PUT
+#            - POST
+#            - HEAD
+#            AllowedOrigins:
+#            - "*"
+#            AllowedHeaders:
+#            - "*"
+
+functions:
+  requestUploadURL:
+    handler: handler.requestUploadURL
+    events:
+      - http:
+          path: requestUploadURL
+          method: post
+          cors: true
+  catFace:
+    handler: handler.catFace
+    timeout: 30
+    events:
+      - s3:
+          bucket: meowed-upload
+          event: s3:ObjectCreated:*
+
