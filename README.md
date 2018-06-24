@@ -1,7 +1,7 @@
 # CATFACE
 Making overlay cat mustache on faces in images
 
-![](https://images.viblo.asia/5bc931e7-a5e0-46b0-8d4c-695fdf3eb3bb.jpg)
+![Demo](https://github.com/hoangsetup/meowed/blob/master/mewed_demo.jpg?raw=true)
 
 ## Serverless Architectures
 * Amazon S3: Storage
@@ -9,7 +9,7 @@ Making overlay cat mustache on faces in images
 * API Gateway: Public service via http service
 * Amazon Rekognition: Image and video analysis
 
-![](https://images.viblo.asia/de112c4c-8adc-457a-9994-a38472d309a0.png)
+![Serverless Architectures](https://raw.githubusercontent.com/hoangsetup/meowed/master/serverless_architecture.png)
 
 ## Deploy
 ### Requires
